@@ -178,6 +178,7 @@ let root = commandpost
                     tsfmt: tsfmt,
                     tsfmtFile: tsfmtFile,
                     verbose: verbose,
+                    glob: glob,
                 })
                 .then(result => {
                     let resultMap: lib.ResultMap = {};
@@ -202,6 +203,7 @@ let root = commandpost
                     tsfmt: tsfmt,
                     tsfmtFile: tsfmtFile,
                     verbose: verbose,
+                    glob: glob,
                 })
                 .then(showResultHandler)
                 .catch(errorHandler);

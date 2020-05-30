@@ -123,6 +123,7 @@ describe("tsfmt test", () => {
                             vscodeFile: null,
                             tsfmt: true,
                             tsfmtFile: null,
+                            glob: false,
                         })
                         .then(resultMap => {
                             let result = resultMap[fileName];
@@ -182,6 +183,7 @@ describe("tsfmt test", () => {
                     vscodeFile: null,
                     tsfmt: true,
                     tsfmtFile: null,
+                    glob: false,
                 })
                 .then(resultMap => {
                     assert(resultMap[fileName].error);
@@ -210,6 +212,7 @@ describe("tsfmt test", () => {
                     vscodeFile: null,
                     tsfmt: true,
                     tsfmtFile: null,
+                    glob: false,
                 })
                 .then(result => {
                     assert(result !== null);
@@ -272,6 +275,7 @@ describe("tsfmt test", () => {
                         vscodeFile: null,
                         tsfmt: true,
                         tsfmtFile: null,
+                        glob: false,
                     }, matrix.settings))
                     .then(resultMap => {
                         let result = resultMap[matrix.targetFile];
