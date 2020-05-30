@@ -7,17 +7,13 @@ try {
 import * as ts from "typescript";
 
 import * as fs from "fs";
-// import { GlobbyOptions, sync } from "globby";
 import * as path from "path";
 import * as commandpost from "commandpost";
 
 import * as lib from "./";
 import { getConfigFileName, readFilesFromTsconfig } from "./utils";
 
-const globLib = import("globby");
-// const GlobbyOptions = globLib.GlobbyOptions;
-// const sync = globLib.sync;
-
+const globby = require("globby");
 const packageJson = JSON.parse(fs.readFileSync(path.join(__dirname, "../package.json")).toString());
 
 interface RootOptions {
@@ -104,10 +100,11 @@ let root = commandpost
         }
 
         if (glob) {
-            const globOpts: globLib.GlobbyOptions = {
-                gitignore: true,
-            };
-            files.concat(globLib.sync(files, globOpts));
+            if (verbose) {
+                console.log(`glob expansion in progress...`);
+            }
+            const expanded = globby.sync(files, { gitignore: true });
+            files = expanded;
             if (verbose) {
                 console.log(`glob expanded to ${files.length} files`);
             }
