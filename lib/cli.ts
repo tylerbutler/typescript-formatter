@@ -7,6 +7,7 @@ try {
 import * as ts from "typescript";
 
 import * as fs from "fs";
+import * as globLib from "glob";
 import * as path from "path";
 import * as commandpost from "commandpost";
 
@@ -31,6 +32,7 @@ interface RootOptions {
     useVscode: string[];
     verbose: boolean;
     version: boolean;
+    glob: boolean;
 }
 
 interface RootArguments {
@@ -54,6 +56,7 @@ let root = commandpost
     .option("--useVscode <path>", "using specified config file instead of .vscode/settings.json")
     .option("--verbose", "makes output more verbose")
     .option("-v, --version", "output the version number")
+    .option("-g, --glob", "interpret paths as glob patterns")
     .action((opts, args) => {
         let replace = !!opts.replace;
         let verify = !!opts.verify;
@@ -70,6 +73,7 @@ let root = commandpost
         let tsfmtFile = opts.useTsfmt[0] ? path.join(process.cwd(), opts.useTsfmt[0]) : null;
         let verbose = !!opts.verbose;
         let version = !!opts.version;
+        let glob = !!opts.glob;
 
         if (version) {
             console.log(`tsfmt : ${packageJson.version}`);
@@ -93,6 +97,13 @@ let root = commandpost
         if (files.length === 0 && !opts.stdin) {
             process.stdout.write(root.helpText() + "\n");
             return;
+        }
+
+        if (glob) {
+            files.concat(globLib.sync(files.join(" ")));
+            if (verbose) {
+                console.log(`glob expanded to ${files.length} files`);
+            }
         }
 
         if (verbose) {
@@ -142,6 +153,7 @@ let root = commandpost
             if (tsfmtFile) {
                 printSetting("specified tsfmt.json", tsfmtFile);
             }
+            printSetting("glob", glob);
 
             doPrint();
         }

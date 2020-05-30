@@ -32,6 +32,7 @@ export interface Options {
     vscodeFile: string | null;
     tsfmt: boolean;
     tsfmtFile: string | null;
+    glob: boolean;
 }
 
 export interface OptionModifier {
